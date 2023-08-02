@@ -19,6 +19,14 @@ impl Machine {
         }
     }
     fn execute(&mut self, instruction: Instruction) {
+        if self.condition_fail_flag && self.brace_balance == 0 {
+            match instruction {
+                Instruction::OpeningBlock => self.brace_balance += 1,
+                Instruction::ClosingBlock => self.brace_balance -= 1,
+                _ => (),
+            }
+            return;
+        }
         match instruction {
             Instruction::IncrementPointer => {
                 self.pointer += 1;
